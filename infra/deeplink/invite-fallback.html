@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--
+  초대 링크 폴백 페이지.
+  https://{HOST}/invite/{token} 경로로 서빙.
+  - 앱 설치됨: App Links 가 이 URL 을 가로채므로 이 페이지는 보통 안 보임.
+  - 앱 미설치: 이 페이지가 열려 스토어로 안내(+ 초대 코드 수동 참여 안내).
+  배포 시 STORE_URL 을 실제 Play 스토어 주소로 교체.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TripMapTrace 여행 초대</title>
+  <style>
+    body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; margin: 0;
+           background: #f5f6f8; color: #1f2430; display: flex; min-height: 100vh;
+           align-items: center; justify-content: center; }
+    .card { background: #fff; border-radius: 16px; padding: 32px 24px; max-width: 360px;
+            width: calc(100% - 48px); box-shadow: 0 8px 24px rgba(0,0,0,.08); text-align: center; }
+    h1 { font-size: 20px; margin: 0 0 8px; }
+    p { color: #6b7280; font-size: 14px; line-height: 1.5; margin: 0 0 20px; }
+    .btn { display: block; background: #3b6ef0; color: #fff; text-decoration: none;
+           padding: 14px; border-radius: 12px; font-weight: 600; font-size: 15px; }
+    .code { margin-top: 16px; font-size: 13px; color: #9ca3af; word-break: break-all; }
+    .code b { color: #1f2430; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>✈️ 여행에 초대되었습니다</h1>
+    <p>TripMapTrace 앱을 설치하면 초대된 여행에 바로 참여할 수 있어요.</p>
+    <a class="btn" id="store" href="STORE_URL">앱 설치하기</a>
+    <div class="code">앱 설치 후 홈에서 아래 초대 코드로 참여하세요<br /><b id="token">—</b></div>
+  </div>
+  <script>
+    // 경로 /invite/{token} 에서 토큰을 추출해 안내에 노출.
+    var seg = location.pathname.split('/').filter(Boolean);
+    var token = seg.length > 1 ? seg[seg.length - 1] : '';
+    if (token) document.getElementById('token').textContent = token;
+    // 필요 시 스토어로 자동 이동하려면 아래 주석 해제:
+    // setTimeout(function () { location.href = 'STORE_URL'; }, 1500);
+  </script>
+</body>
+</html>

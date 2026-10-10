@@ -1,0 +1,56 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: tripmaptrace-postgres
+    environment:
+      POSTGRES_USER: tripmaptrace
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: tripmaptrace
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  minio:
+    image: minio/minio:latest
+    container_name: tripmaptrace-minio
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_SERVER_URL: ${S3_EXTERNAL_ENDPOINT}
+    ports:
+      - "${MINIO_PUBLIC_PORT}:9000"
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ../backend
+    container_name: tripmaptrace-backend
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_PASSWORD: ${DB_PASSWORD}
+      S3_EXTERNAL_ENDPOINT: ${S3_EXTERNAL_ENDPOINT}
+      JWT_SECRET: ${JWT_SECRET}
+      FIREBASE_SERVICE_ACCOUNT_KEY: /serviceAccountKey.json
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      HOLIDAY_API_KEY: ${HOLIDAY_API_KEY}
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m"
+    volumes:
+      - ./serviceAccountKey.json:/serviceAccountKey.json:ro
+    ports:
+      - "${BACKEND_PUBLIC_PORT}:8080"
+    depends_on:
+      - postgres
+      - minio
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  minio_data:

@@ -1,0 +1,1 @@
+ALTER TABLE trips ADD COLUMN cover_media_id BIGINT REFERENCES media(id) ON DELETE SET NULL;

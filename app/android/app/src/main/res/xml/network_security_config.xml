@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">10.0.2.2</domain>
+        <!-- 운영 서버 주소는 공개 저장소에서 제외 -->
+    </domain-config>
+</network-security-config>

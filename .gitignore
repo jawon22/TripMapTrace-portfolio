@@ -1,0 +1,65 @@
+# IntelliJ
+.idea/
+*.iml
+
+# VSCode
+.vscode/
+
+# Flutter (app)
+app/.dart_tool/
+app/build/
+app/.flutter-plugins
+app/.flutter-plugins-dependencies
+app/.packages
+
+# Android
+app/android/.gradle/
+app/android/build/
+app/android/local.properties
+app/android/app/build/
+app/android/app/google-services.json
+
+# iOS
+app/ios/Pods/
+app/ios/.symlinks/
+app/ios/Flutter/Flutter.framework
+app/ios/Flutter/Flutter.podspec
+app/ios/Runner/GoogleService-Info.plist
+
+# Spring
+backend/build/
+backend/.gradle/
+backend/out/
+
+#Docker (infra)
+infra/.env
+infra/.env.prod
+docker-compose.yml
+!infra/docker-compose.yml
+
+# Firebase 서비스 계정 키 (민감 정보)
+serviceAccountKey.json
+**/serviceAccountKey.json
+
+# 환경변수 파일 (JWT_SECRET 등 민감 정보)
+backend/.env
+**/.env.local
+**/.env.production
+**/.env.prod
+app/.env.json
+
+# 환경 설정 파일
+backend/src/main/resources/application.yml
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Private server info (IP, SSH key path)
+.claude/
+
+# Claude Code 로컬 권한 설정 (개인 환경)
+.claude/settings.local.json

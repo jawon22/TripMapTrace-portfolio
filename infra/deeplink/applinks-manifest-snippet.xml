@@ -1,0 +1,16 @@
+<!--
+  배포 시 AndroidManifest.xml 의 .MainActivity 안에 추가할 App Links intent-filter.
+  {HOST} 를 실제 도메인(예: tripmaptrace.netlify.app)으로 교체할 것.
+  기존 커스텀 스킴(tripmaptrace://) intent-filter 는 삭제하지 말고 그대로 둔다
+  (QR 대면 스캔·구버전 호환용).
+
+  android:autoVerify="true" 가 있어야 OS 가 assetlinks.json 을 검증해
+  선택창 없이 앱이 링크를 바로 가로챈다.
+-->
+<intent-filter android:autoVerify="true">
+    <action android:name="android.intent.action.VIEW" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+    <data android:scheme="https" android:host="{HOST}" android:pathPrefix="/invite" />
+    <data android:scheme="https" android:host="{HOST}" android:pathPrefix="/reset-password" />
+</intent-filter>

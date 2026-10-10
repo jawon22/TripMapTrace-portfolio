@@ -1,0 +1,6 @@
+# App Links 검증 파일: 점 폴더(.well-known)는 브라우저 드래그 시 크로미움이 제외하므로
+# 일반 폴더(well-known)에 두고 올바른 경로로 200 rewrite(리다이렉트 아님 → 검증 통과).
+/.well-known/assetlinks.json   /well-known/assetlinks.json   200
+
+# /invite/{token} 경로를 폴백 페이지로 rewrite(200: URL 유지, 토큰을 JS가 읽음)
+/invite/*   /invite-fallback.html   200

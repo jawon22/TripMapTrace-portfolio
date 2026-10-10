@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.triptracemap.app",
+      "sha256_cert_fingerprints": [
+        "51:36:1B:F3:00:B6:3C:A5:66:A8:83:CA:06:B9:04:09:6D:A5:95:E1:03:3E:57:87:AC:C1:5B:73:14:33:1E:32"
+      ]
+    }
+  }
+]
