@@ -147,6 +147,18 @@ sequenceDiagram
 - CI/CD 없이 정리된 수동 배포 절차를 따르고 있으며, 자동화된 테스트가 부족합니다.
 - App Links 검증 파일에는 아직 debug 서명 지문이 등록되어 있습니다(정식 릴리스 키로 교체 예정). iOS는 빌드·검증하지 않았습니다.
 
+## 트러블슈팅
+
+### 1. 실기기 업로드 시 MinIO PUT `403 SignatureDoesNotMatch`
+- **증상**: 실기기에서 presigned URL로 업로드하면 MinIO PUT 단계에서 403이 발생했습니다.
+- **처음 의심한 원인**: 서명에 포함되는 호스트 문제라고 보고 MinIO에 `MINIO_SERVER_URL`을 추가했지만 증상은 그대로였습니다.
+- **확인 방법**: 같은 자격증명·엔드포인트로 Python boto3로 presigned URL을 만들어 보니 PUT이 성공했고, AWS SDK for Java v2 `2.25.60`으로 만든 URL만 실패했습니다. 서명을 직접 검증하니 boto3 URL은 `UNSIGNED-PAYLOAD`로 일치했고, Java URL은 어떤 payload hash 조합으로도 일치하지 않았습니다.
+- **원인 · 해결**: SDK 버전의 presigned URL 서명이 최신 MinIO와 호환되지 않는 문제였습니다. SDK를 `2.31.1`로 올려 해결했습니다.
+
+### 2. 1GB RAM VM의 리소스 부족
+- **빌드 단계**: 서버에서 Docker 빌드를 하던 중 Gradle 의존성 다운로드 단계에서 VM이 응답하지 않았습니다. 로컬에서 `bootJar`를 빌드해 서버로 전송하고, `Dockerfile`은 JAR만 복사하는 방식으로 단순화했습니다.
+- **운영 단계**: 운영 중 메모리가 부족해 SSH를 포함한 VM 전체가 응답하지 않았습니다. 스왑 2GB를 영구 등록하고 JVM 힙 상한을 설정해, 메모리가 초과되어도 VM 전체가 멈추지 않도록 했습니다.
+
 ---
 
 ## 실행 방법 (로컬)
